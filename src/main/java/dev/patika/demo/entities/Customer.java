@@ -1,5 +1,6 @@
 package dev.patika.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -41,6 +42,7 @@ public class Customer {
 
     //Bir customer'ın birden fazla animal'ı olabilir.
     @OneToMany(mappedBy = "customer")
+    @JsonManagedReference //İlişkili nesne tarafında "ön tarafta" kullanılır.
     private List<Animal> animals;
 
 

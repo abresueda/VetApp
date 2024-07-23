@@ -6,7 +6,6 @@ import dev.patika.demo.core.result.Result;
 import dev.patika.demo.core.result.ResultData;
 import dev.patika.demo.core.ulties.ResultHelper;
 import dev.patika.demo.dto.request.Animal.AnimalRequest;
-import dev.patika.demo.dto.response.Animal.AnimalListResponse;
 import dev.patika.demo.dto.response.Animal.AnimalResponse;
 import dev.patika.demo.entities.Animal;
 import jakarta.validation.Valid;
@@ -37,20 +36,22 @@ public class AnimalController {
     }
 
     //Animalları isme göre filtreleyerek aramayı sağlar.
-    @GetMapping("/{name}")
+    @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Animal> get(@PathVariable("name") String name) {
+    public ResultData<List<Animal>> get(@PathVariable("name") String name) {
+        List<Animal> animals = this.animalService.get(name);
         /*List<AnimalResponse> animals = this.animalService.get(name);
         AnimalListResponse animalResponse = new AnimalListResponse(animals);
         return ResultHelper.success(animalResponse);*/
-        return this.animalService.get(name);
+        return new ResultData<>(true, "Hayvan bulundu.", "200", animals);
     }
 
     //Animalları, customerlara göre filtreleyerek getirtmeyi sağlar.
-    @GetMapping("/{customerId}")
+    @GetMapping("/customer/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<AnimalListResponse> getByCustomerId(@PathVariable("customerId") Long customerId) {
-        return (ResultData<AnimalListResponse>) this.animalService.getByCustomerId(customerId);
+    public ResultData<List<Animal>> getByCustomerId(@PathVariable("customerId") Long customerId) {
+        List<Animal> animals = this.animalService.getByCustomerId(customerId);
+        return new ResultData<>(true, "Müşteri bulundu.", "200", animals);
     }
 
     @PutMapping()
@@ -67,7 +68,6 @@ public class AnimalController {
     public Result delete(@PathVariable("id") Long id) {
         this.animalService.delete(id);
         return ResultHelper.ok();
-
     }
 
 

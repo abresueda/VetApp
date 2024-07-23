@@ -27,7 +27,7 @@ public class AnimalManager implements IAnimalService {
 
     //Animalları isme göre getirtmek için.
     @Override
-    public List<Animal> get(String name) {
+    public List<Animal> get (String name) {
         List<Animal> animals = this.animalRepo.findByName(name);
         if (animals.isEmpty()) {
             throw new NotFoundException("Hayvan bulunamadı.");
@@ -52,7 +52,8 @@ public class AnimalManager implements IAnimalService {
 
     @Override
     public String delete(Long id) {
-        Animal animal = (Animal) this.get(String.valueOf(id));
+        Animal animal = this.animalRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Hayvan bulunamadı."));
         this.animalRepo.delete(animal);
         return "Kayıtlı hayvan başarıyla silindi.";
     }

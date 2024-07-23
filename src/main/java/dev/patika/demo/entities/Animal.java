@@ -1,5 +1,6 @@
 package dev.patika.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -42,6 +43,7 @@ public class Animal {
     //Bir Animal, bir customer tarafından sahiplenilir.
     @ManyToOne
     @JoinColumn(name = "customer_id")
+    @JsonBackReference //İlişkili nesnelerde arka tarafında, serileştirme sırasında bu tarafı dikkate almayacağı anlamına gelir.
     private Customer customer;
 
     //Bir Animal, birden fazla vaccine olabilir.

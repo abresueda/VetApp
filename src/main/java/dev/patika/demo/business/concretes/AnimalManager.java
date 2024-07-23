@@ -47,7 +47,6 @@ public class AnimalManager implements IAnimalService {
 
     @Override
     public Animal update(Animal animal) {
-        this.get(String.valueOf(animal.getId()));
         return this.animalRepo.save(animal);
     }
 

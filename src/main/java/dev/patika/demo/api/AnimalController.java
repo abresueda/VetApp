@@ -13,6 +13,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/v2/animals")
@@ -37,11 +39,11 @@ public class AnimalController {
     //Animalları isme göre filtreleyerek aramayı sağlar.
     @GetMapping("/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<AnimalListResponse> get(@PathVariable("name") String name) {
+    public List<Animal> get(@PathVariable("name") String name) {
         /*List<AnimalResponse> animals = this.animalService.get(name);
         AnimalListResponse animalResponse = new AnimalListResponse(animals);
         return ResultHelper.success(animalResponse);*/
-        return (ResultData<AnimalListResponse>) this.animalService.get(name);
+        return this.animalService.get(name);
     }
 
     //Animalları, customerlara göre filtreleyerek getirtmeyi sağlar.

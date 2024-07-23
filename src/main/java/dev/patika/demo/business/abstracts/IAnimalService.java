@@ -9,7 +9,9 @@ public interface IAnimalService {
 
     Animal save(Animal animal);
 
-    List<AnimalResponse> get(String name);
+    List<Animal> get(String name);
+
+    List<Animal> getByCustomerId(Long customerId);
 
     Animal update(Animal animal);
 

@@ -4,11 +4,9 @@ import dev.patika.demo.business.abstracts.ICustomerService;
 import dev.patika.demo.core.exception.NotFoundException;
 import dev.patika.demo.core.ulties.Message;
 import dev.patika.demo.dao.CustomerRepo;
-import dev.patika.demo.entities.Animal;
 import dev.patika.demo.entities.Customer;
 import org.springframework.stereotype.Service;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 
 @Service

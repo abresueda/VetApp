@@ -1,5 +1,6 @@
 package dev.patika.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,6 +34,7 @@ public class Vaccine {
     private LocalDate protectionFinishDate;
 
     //Bir Vaccine, birden çok Animal'a yapılabilir.
-    @ManyToMany(mappedBy = "vaccines")
+    @ManyToMany(mappedBy = "vaccines", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<Animal> animals = new ArrayList<>();
 }

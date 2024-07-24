@@ -41,7 +41,7 @@ public class Customer {
     private String city;
 
     //Bir customer'ın birden fazla animal'ı olabilir.
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference //İlişkili nesne tarafında "ön tarafta" kullanılır.
     private List<Animal> animals;
 

@@ -41,17 +41,22 @@ public class Animal {
     private LocalDate dateOfBirth;
 
     //Bir Animal, bir customer tarafından sahiplenilir.
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     @JsonBackReference //İlişkili nesnelerde arka tarafında, serileştirme sırasında bu tarafı dikkate almayacağı anlamına gelir.
     private Customer customer;
 
     //Bir Animal, birden fazla vaccine olabilir.
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "animal_vaccine",
             joinColumns = @JoinColumn(name = "animal_id"),
             inverseJoinColumns = @JoinColumn(name = "vaccine_id")
     )
+    @JsonBackReference
     private List<Vaccine> vaccines;
+
+    //Bir animal'ın ise birden fazla randevusu olabilir.
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Appointment> appointments;
 }

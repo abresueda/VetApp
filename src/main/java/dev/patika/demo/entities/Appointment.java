@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -19,10 +19,17 @@ public class Appointment {
     private Long id;
 
     @Column(name = "appointment_date")
-    private LocalDate appointmentDate;
+    private LocalDateTime date;
 
     //Bir Doctor, birden çok Appointment yapabilir.Ama bir Appointment, bir Doctor tarafından yapılabilir.
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
+
+    //Bir randevu yalnızca bir animal'a aittir.Bir animal'ın ise birden fazla randevusu olabilir.
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "animal_id")
+    private Animal animal;
+
+
 }

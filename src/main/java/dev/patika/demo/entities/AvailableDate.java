@@ -23,7 +23,7 @@ public class AvailableDate {
     private LocalDate availableDate;
 
     //Bir Doctor, birden fazla availableDate'e sahip olabilir.
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
 }

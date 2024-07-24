@@ -40,9 +40,6 @@ public class AnimalController {
     @ResponseStatus(HttpStatus.OK)
     public ResultData<List<Animal>> get(@PathVariable("name") String name) {
         List<Animal> animals = this.animalService.get(name);
-        /*List<AnimalResponse> animals = this.animalService.get(name);
-        AnimalListResponse animalResponse = new AnimalListResponse(animals);
-        return ResultHelper.success(animalResponse);*/
         return new ResultData<>(true, "Hayvan bulundu.", "200", animals);
     }
 

@@ -3,6 +3,7 @@ package dev.patika.demo.business.concretes;
 import dev.patika.demo.business.abstracts.IVaccineService;
 import dev.patika.demo.core.config.modelMapper.IModelMapperService;
 import dev.patika.demo.core.exception.NotFoundException;
+import dev.patika.demo.core.exception.VaccineValidityException;
 import dev.patika.demo.core.ulties.Message;
 import dev.patika.demo.dao.AnimalRepo;
 import dev.patika.demo.dao.VaccineRepo;
@@ -34,7 +35,7 @@ public class VaccineManager implements IVaccineService {
         List<Vaccine> vaccineProtection = this.vaccineRepo.findByCodeAndAnimalsIdAndProtectionFinishDateAfter(
                 vaccine.getCode(), animalId, LocalDate.now());
         if (!vaccineProtection.isEmpty()) {
-            throw new IllegalStateException("Aşı koruyuculuğu hala geçerlidir.");
+            throw new VaccineValidityException("Aşı koruyuculuğu hala geçerlidir.");
         }
 
         Animal animal = animalRepo.findById(animalId)

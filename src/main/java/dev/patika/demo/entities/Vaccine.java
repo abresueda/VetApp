@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,12 +27,12 @@ public class Vaccine {
     private String code;
 
     @Column(name = "protection_strt_date")
-    private LocalDate protectionStrtDate;
+    private LocalDate protectionStartDate;
 
     @Column(name = "protection_fnsh_date")
-    private LocalDate protectionFnshDate;
+    private LocalDate protectionFinishDate;
 
     //Bir Vaccine, birden çok Animal'a yapılabilir.
     @ManyToMany(mappedBy = "vaccines")
-    private List<Animal> animals;
+    private List<Animal> animals = new ArrayList<>();
 }

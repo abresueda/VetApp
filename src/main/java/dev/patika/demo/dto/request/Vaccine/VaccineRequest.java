@@ -1,6 +1,7 @@
 package dev.patika.demo.dto.request.Vaccine;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,7 @@ public class VaccineRequest {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy")
     private LocalDate protectionFinishDate;
+
+    @NotNull
+    private Long animalId;
 }

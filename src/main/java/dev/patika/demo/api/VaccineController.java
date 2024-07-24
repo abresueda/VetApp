@@ -6,14 +6,14 @@ import dev.patika.demo.core.result.Result;
 import dev.patika.demo.core.result.ResultData;
 import dev.patika.demo.core.ulties.ResultHelper;
 import dev.patika.demo.dto.request.Vaccine.VaccineRequest;
-import dev.patika.demo.dto.response.Doctor.DoctorResponse;
 import dev.patika.demo.dto.response.Vaccine.VaccineResponse;
-import dev.patika.demo.entities.Doctor;
+import dev.patika.demo.dto.response.Vaccine.VaccineWithAnimalsDTO;
 import dev.patika.demo.entities.Vaccine;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -32,8 +32,8 @@ public class VaccineController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResultData<VaccineResponse> save(@Valid @RequestBody VaccineRequest vaccineRequest) {
         Vaccine saveVaccine = this.modelMapper.forRequest().map(vaccineRequest, Vaccine.class);
-        this.vaccineService.save(saveVaccine);
-        return ResultHelper.created(this.modelMapper.forResponse().map(saveVaccine, VaccineResponse.class));
+        Vaccine savedVaccine = this.vaccineService.save(saveVaccine, vaccineRequest.getAnimalId());
+        return ResultHelper.created(this.modelMapper.forResponse().map(savedVaccine, VaccineResponse.class));
     }
 
     @PutMapping()
@@ -58,6 +58,14 @@ public class VaccineController {
     public ResultData<List<Vaccine>> getVaccinesByAnimalId(@PathVariable("animalId") Long animalId) {
         List<Vaccine> vaccines = this.vaccineService.getVaccinesByAnimalId(animalId);
         return new ResultData<>(true, "Aşı bulundu.", "200", vaccines);
+    }
+
+    @GetMapping("/protection-finish-date")
+    @ResponseStatus(HttpStatus.OK)
+    public ResultData<List<VaccineWithAnimalsDTO>> getVaccinesByProtectionFinishDate(@RequestParam LocalDate protectionStartDate, @RequestParam LocalDate protectionFinishDate) {
+        List<VaccineWithAnimalsDTO> vaccines = this.vaccineService.getVaccinesByProtectionFinishDateBetween(protectionStartDate, protectionFinishDate);
+
+        return new ResultData<>(true, "Aşı koruyuculuk bitiş tarihi yaklaştı.", "200", vaccines);
     }
 
     @DeleteMapping("/{id}")

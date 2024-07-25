@@ -13,4 +13,5 @@ public class AppointmentRequest {
     private Long id;
     private LocalDateTime appointmentDate;
     private Long doctorId;
+    private Long animalId;
 }

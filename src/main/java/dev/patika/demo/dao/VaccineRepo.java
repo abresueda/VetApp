@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface VaccineRepo extends JpaRepository<Vaccine, Long> {
@@ -17,4 +18,6 @@ public interface VaccineRepo extends JpaRepository<Vaccine, Long> {
 
     //Aşı koruyuculuk bitiş tarihi yaklaşanları listelemek için.
     List<Vaccine> findByProtectionFinishDateBetween(LocalDate protectionStartDate, LocalDate protectionFinishDate);
+
+    Optional<Vaccine> findByCode(String code);
 }

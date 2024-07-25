@@ -3,6 +3,8 @@ package dev.patika.demo.business.concretes;
 import dev.patika.demo.business.abstracts.IVaccineService;
 import dev.patika.demo.core.config.modelMapper.IModelMapperService;
 import dev.patika.demo.core.exception.NotFoundException;
+import dev.patika.demo.core.exception.RecordAlreadyExistsException;
+import dev.patika.demo.core.exception.RecordNotFoundException;
 import dev.patika.demo.core.exception.VaccineValidityException;
 import dev.patika.demo.core.ulties.Message;
 import dev.patika.demo.dao.AnimalRepo;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +41,12 @@ public class VaccineManager implements IVaccineService {
             throw new VaccineValidityException("Aşı koruyuculuğu hala geçerlidir.");
         }
 
+        //Kaydın sistemde olup olmadığını kontrol etmek için.
+        Optional<Vaccine> existingVaccine = this.vaccineRepo.findByCode(vaccine.getCode());
+        if (existingVaccine.isPresent()) {
+            throw new RecordAlreadyExistsException("Kayıt sistemde mevcut!");
+        }
+
         Animal animal = animalRepo.findById(animalId)
                 .orElseThrow(() -> new IllegalArgumentException(animalId + "Id'ye sahip hayvan bulunamadı."));
 
@@ -53,6 +62,9 @@ public class VaccineManager implements IVaccineService {
 
     @Override
     public Vaccine update(Vaccine vaccine) {
+        if (!vaccineRepo.existsById(vaccine.getId())) {
+            throw new RecordNotFoundException(vaccine.getId() + " ID'li kayıt sistem bulunamadı.");
+        }
         this.get(vaccine.getId());
         return this.vaccineRepo.save(vaccine);
     }
@@ -60,7 +72,7 @@ public class VaccineManager implements IVaccineService {
     //Vaccine id'sine göre vaccineları getirtmek için.
     @Override
     public Vaccine get(Long id) {
-        return this.vaccineRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
+        return this.vaccineRepo.findById(id).orElseThrow(() -> new RecordNotFoundException(Message.NOT_FOUND));
     }
 
     //Animal id'sine göre, vaccineları getirtmek için.
@@ -91,6 +103,9 @@ public class VaccineManager implements IVaccineService {
 
     @Override
     public String delete(Long id) {
+        if (!vaccineRepo.existsById(id)) {
+            throw new RecordNotFoundException(id + " ID'li kayıt sistemde bulunamadı.");
+        }
         Vaccine vaccine = this.get(id);
         this.vaccineRepo.delete(vaccine);
         return "Aşı başarıyla silindi.";

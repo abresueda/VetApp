@@ -55,23 +55,29 @@ public class AppointmentController {
     //Randevular, doctorId'si ve tarih aralığına göre filtrelenir.
     @GetMapping("/doctor/{doctorId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<List<Appointment>> getByDoctorIdAndDateRange(
+    public ResultData<List<AppointmentResponse>> getByDoctorIdAndDateRange(
             @PathVariable("doctorId") Long doctorId,
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         List<Appointment> appointments = this.appointmentService.getByDoctorIdAndDateRange(doctorId, startDate, endDate);
-        return new ResultData<>(true, "Randevusu olan doktor bulundu.", "200", appointments);
+        List<AppointmentResponse> appointmentResponses = appointments.stream()
+                .map(appointment -> this.modelMapper.forResponse().map(appointment, AppointmentResponse.class))
+                .toList();
+        return ResultHelper.success(appointmentResponses);
     }
 
     //Randevular, animalId'si ve tarih aralığına göre filtrelenir.
     @GetMapping("/animal/{animalId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<List<Appointment>> getByAnimalIdAndDateRange(
+    public ResultData<List<AppointmentResponse>> getByAnimalIdAndDateRange(
             @PathVariable("animalId") Long animalId,
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         List<Appointment> appointments = this.appointmentService.getByAnimalIdAndDateRange(animalId, startDate, endDate);
-        return new ResultData<>(true, "Randevusu olan hayvan bulundu.", "200", appointments);
+        List<AppointmentResponse> appointmentResponses = appointments.stream()
+                .map(appointment -> this.modelMapper.forResponse().map(appointment, AppointmentResponse.class))
+                .toList();
+        return ResultHelper.success(appointmentResponses);
     }
 
     @DeleteMapping("/{id}")

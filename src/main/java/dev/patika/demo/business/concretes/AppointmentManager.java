@@ -3,6 +3,7 @@ package dev.patika.demo.business.concretes;
 import dev.patika.demo.business.abstracts.IAppointmentService;
 import dev.patika.demo.core.exception.AppointmentConflictException;
 import dev.patika.demo.core.exception.NotFoundException;
+import dev.patika.demo.core.exception.RecordNotFoundException;
 import dev.patika.demo.core.ulties.Message;
 import dev.patika.demo.dao.AppointmentRepo;
 import dev.patika.demo.dao.DoctorRepo;
@@ -50,6 +51,9 @@ public class AppointmentManager implements IAppointmentService {
 
     @Override
     public Appointment update(Appointment appointment) {
+        if (!appointmentRepo.existsById(appointment.getId())) {
+            throw new RecordNotFoundException(appointment.getId() + " ID'li kayıt sistemde bulunamadı.");
+        }
         this.get(appointment.getId());
         return this.appointmentRepo.save(appointment);
     }
@@ -66,11 +70,14 @@ public class AppointmentManager implements IAppointmentService {
 
     @Override
     public Appointment get(Long id) {
-        return this.appointmentRepo.findById(id).orElseThrow(() -> new NotFoundException(Message.NOT_FOUND));
+        return this.appointmentRepo.findById(id).orElseThrow(() -> new RecordNotFoundException(Message.NOT_FOUND));
     }
 
     @Override
     public String delete(Long id) {
+        if (!appointmentRepo.existsById(id)) {
+            throw new RecordNotFoundException(id + " ID'li kayıt sistemde bulunamadı.");
+        }
         Appointment appointment = this.get(id);
         this.appointmentRepo.delete(appointment);
         return "Randevu başarıyla silindi.";

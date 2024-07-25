@@ -25,4 +25,8 @@ public class ResultHelper {
     public static Result notFoundError(String msg) {
         return new Result(false, msg, "404");
     }
+
+    public static Result error(String msg) {
+        return new Result(false, msg, "400");
+    }
 }

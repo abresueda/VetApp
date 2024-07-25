@@ -34,7 +34,7 @@ public class CustomerController {
     }
 
     //Customerları isimlerine göre getirtmek için.
-    @GetMapping("/{name}")
+    @GetMapping()
     @ResponseStatus(HttpStatus.OK)
     public ResultData<List<Customer>> getByName(@RequestParam("name") String name) {
         List<Customer> customers = this.customerService.getByName(name);

@@ -1,5 +1,6 @@
 package dev.patika.demo.core.ulties;
 
+import dev.patika.demo.core.exception.AppointmentConflictException;
 import dev.patika.demo.core.exception.VaccineValidityException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,6 +13,12 @@ public class CustomExceptionHandler {
     @ExceptionHandler(VaccineValidityException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public String handleVaccineValidityException(VaccineValidityException e) {
+        return e.getMessage();
+    }
+
+    @ExceptionHandler(AppointmentConflictException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String handleAppointmentConflictExcepiton(AppointmentConflictException e) {
         return e.getMessage();
     }
 }

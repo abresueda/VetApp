@@ -31,7 +31,7 @@ public class CustomerManager implements ICustomerService {
     //Customerları, isimlerine göre filtreleyerek getirmek için.
     @Override
     public List<Customer> getByName(String name) {
-        List<Customer> customers = this.customerRepo.findByName(name);
+        List<Customer> customers = this.customerRepo.findByNameContainingIgnoreCase(name);
         if (customers.isEmpty()) {
             throw new NotFoundException("Müşteri bulunamadı.");
         }

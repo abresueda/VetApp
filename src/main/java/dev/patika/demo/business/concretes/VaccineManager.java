@@ -98,7 +98,6 @@ public class VaccineManager implements IVaccineService {
             vaccineWithAnimalsDTO.setAnimals(animalResponses);
             return vaccineWithAnimalsDTO;
         }).collect(Collectors.toList());
-        //return this.vaccineRepo.findByProtectionFinishDateBetween(protectionStartDate, protectionFinishDate);
     }
 
     @Override

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v2/vaccines")
@@ -55,9 +56,12 @@ public class VaccineController {
     //AnimalId'ye göre vaccineleri getirtmek için.
     @GetMapping("/animal/{animalId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<List<Vaccine>> getVaccinesByAnimalId(@PathVariable("animalId") Long animalId) {
+    public ResultData<List<VaccineResponse>> getVaccinesByAnimalId(@PathVariable("animalId") Long animalId) {
         List<Vaccine> vaccines = this.vaccineService.getVaccinesByAnimalId(animalId);
-        return new ResultData<>(true, "Aşı bulundu.", "200", vaccines);
+        List<VaccineResponse> vaccineResponses = vaccines.stream()
+                .map(vaccine -> this.modelMapper.forResponse().map(vaccine, VaccineResponse.class))
+                .collect(Collectors.toList());
+        return new ResultData<>(true, "Aşı bulundu.", "200", vaccineResponses);
     }
 
     @GetMapping("/protection-finish-date")

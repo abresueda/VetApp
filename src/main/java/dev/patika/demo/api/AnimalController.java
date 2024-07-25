@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -38,17 +39,23 @@ public class AnimalController {
     //Animalları isme göre filtreleyerek aramayı sağlar.
     @GetMapping("/name/{name}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<List<Animal>> get(@PathVariable("name") String name) {
+    public ResultData<List<AnimalResponse>> get(@PathVariable("name") String name) {
         List<Animal> animals = this.animalService.get(name);
-        return new ResultData<>(true, "Hayvan bulundu.", "200", animals);
+        List<AnimalResponse> animalResponses = animals.stream()
+                .map(animal -> this.modelMapper.forResponse().map(animal, AnimalResponse.class))
+                .collect(Collectors.toList());
+        return new ResultData<>(true, "Hayvan bulundu.", "200", animalResponses);
     }
 
     //Animalları, customerlara göre filtreleyerek getirtmeyi sağlar.
     @GetMapping("/customer/{customerId}")
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<List<Animal>> getByCustomerId(@PathVariable("customerId") Long customerId) {
+    public ResultData<List<AnimalResponse>> getByCustomerId(@PathVariable("customerId") Long customerId) {
         List<Animal> animals = this.animalService.getByCustomerId(customerId);
-        return new ResultData<>(true, "Müşteri bulundu.", "200", animals);
+        List<AnimalResponse> animalResponses = animals.stream()
+                .map(animal -> this.modelMapper.forResponse().map(animal, AnimalResponse.class))
+                .collect(Collectors.toList());
+        return new ResultData<>(true, "Müşteri bulundu.", "200", animalResponses);
     }
 
     @PutMapping()

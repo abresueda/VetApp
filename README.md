@@ -29,12 +29,13 @@ API Endoints
 
 
 
--Animal ve Customer arasında @ManyToOne ve @OneToMany ilişkisi
--Animal ve Vaccine arasında @ManyToMany ilişkisi
--Animal ve Appointment arasında @OneToMany ilişkisi
--Appointment ve Doctor arasında @ManyToOne ilişkisi
--AvailableDate ve Doctor arasında @ManyToOne ilişkisi
--Doctor ve Appointment, AvailableDate arasında @OneToMany ilişkisi
+
+- Animal ve Customer arasında @ManyToOne ve @OneToMany ilişkisi
+- Animal ve Vaccine arasında @ManyToMany ilişkisi
+- Animal ve Appointment arasında @OneToMany ilişkisi
+- Appointment ve Doctor arasında @ManyToOne ilişkisi
+- AvailableDate ve Doctor arasında @ManyToOne ilişkisi
+- Doctor ve Appointment, AvailableDate arasında @OneToMany ilişkisi
 
 Hayvanlar
 Hayvan Kaydetme                                                 --> POST /v2/animals

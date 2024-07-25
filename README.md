@@ -22,8 +22,9 @@ Gereksinimler
 API Endoints
 
 
-![UML Diyagramı-VetApp](https://github.com/user-attachments/assets/ffe71ab5-871b-44f6-bf5b-1028011c3f60)
 
+
+![UMLDiyagramı](https://github.com/user-attachments/assets/c3f70b82-ef3f-45e2-a1ee-54d00a3d46b2)
 
 
 

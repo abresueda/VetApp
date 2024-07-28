@@ -78,6 +78,6 @@ The Veterinary Management System is an API designed to help veterinary clinics m
 
 ## UML Diagram
 
-![UML Diyagramı](assets/uml_diagram.png)
+![UML Diagram](https://github.com/user-attachments/assets/c3f70b82-ef3f-45e2-a1ee-54d00a3d46b2)
 
 

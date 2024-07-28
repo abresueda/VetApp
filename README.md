@@ -1,85 +1,81 @@
-Veteriner Yönetim Sistemi
+# Veterinary Management System
 
-Proje Açıklaması
+## Project Description
 
-Veteriner Yönetim Sistemi, veteriner kliniklerinin işlerini yönetmelerine olanak tanıyan bir API'dir. Bu sistem, veteriner doktorları, çalışma günleri, müşteriler, hayvanlar, aşılar ve randevuları yönetmek için çeşitli özellikler sunar. Kullanıcılar, hayvanlar için randevu oluşturabilir, aşı kayıtlarını yönetebilir ve daha fazlasını yapabilir.
+The Veterinary Management System is an API designed to help veterinary clinics manage their operations efficiently. This system provides various features to manage veterinary doctors, available days, customers, animals, vaccines, and appointments. Users can create appointments for animals, manage vaccine records, and more.
 
-Özellikler
+## Features
 
-- **Veteriner Doktor Yönetimi**: Doktorların kaydedilmesi, güncellenmesi, görüntülenmesi ve silinmesi.
-- **Doktor Müsait Günleri Yönetimi**: Doktorların müsait günlerini ekleme, güncelleme, görüntüleme ve silme.
-- **Hayvan ve Müşteri Yönetimi**: Hayvanların ve müşterilerin kaydedilmesi, güncellenmesi, görüntülenmesi ve silinmesi.
-- **Aşı Yönetimi**: Aşıların kaydedilmesi, güncellenmesi, görüntülenmesi ve silinmesi. Aşı koruyuculuk bitiş tarihi kontrolü.
-- **Randevu Yönetimi**: Hayvanlar için randevu oluşturma, güncelleme, görüntüleme ve silme. Doktorun müsait gün ve saat kontrolü.
+- **Veterinary Doctor Management**: Add, update, view, and delete doctors.
+- **Doctor Availability Management**: Add, update, view, and delete doctor's available days.
+- **Animal and Customer Management**: Add, update, view, and delete animals and customers.
+- **Vaccine Management**: Add, update, view, and delete vaccines. Check vaccine protection end dates.
+- **Appointment Management**: Create, update, view, and delete appointments for animals. Check doctor availability.
 
-Gereksinimler
+## Requirements
 
-- JDK 17 veya daha yeni bir sürüm
+- JDK 17 or newer
 - PostgreSQL
 - Maven
 
+## API Endpoints
 
-API Endoints
+### Animal and Customer Relations
 
+- @ManyToOne and @OneToMany between Animal and Customer
+- @ManyToMany between Animal and Vaccine
+- @OneToMany between Animal and Appointment
+- @ManyToOne between Appointment and Doctor
+- @ManyToOne between AvailableDate and Doctor
+- @OneToMany between Doctor and Appointment, AvailableDate
 
+### Animals
 
+- **Add Animal**: `POST /v2/animals`
+- **Update Animal**: `PUT /v2/animals`
+- **Delete Animal**: `DELETE /v2/animals/{id}`
+- **Filter Animals by Name**: `GET /v2/animals/name/{name}`
+- **View Customer's Animals**: `GET /v2/animals/customer/{customerId}`
 
-![UMLDiyagramı](https://github.com/user-attachments/assets/c3f70b82-ef3f-45e2-a1ee-54d00a3d46b2)
+### Customers
 
+- **Add Customer**: `POST /v2/customers`
+- **Update Customer**: `PUT /v2/customers`
+- **Delete Customer**: `DELETE /v2/customers/{id}`
+- **Filter Customers by Name**: `GET /v2/customers/{name}`
 
+### Vaccines
 
+- **Add Vaccine**: `POST /v2/vaccines`
+- **Update Vaccine**: `PUT /v2/vaccines`
+- **View Vaccine**: `GET /v2/vaccines/{id}`
+- **Delete Vaccine**: `DELETE /v2/vaccines/{id}`
+- **View Animal's Vaccines**: `GET /v2/animals/{animalId}/vaccines`
+- **List Vaccines Approaching End Date**: `GET /v2/vaccines/filter?startDate={startDate}&endDate={endDate}`
 
+### Appointments
 
+- **Create Appointment**: `POST /v2/appointments`
+- **Update Appointment**: `PUT /v2/appointments`
+- **View Appointment**: `GET /v2/appointments/{id}`
+- **Delete Appointment**: `DELETE /v2/appointments/{id}`
+- **Filter Appointments by Doctor and Date Range**: `GET /v2/appointments/doctor/{doctorId}?startDate={startDate}&endDate={endDate}`
+- **Filter Appointments by Animal and Date Range**: `GET /v2/appointments/animal/{animalId}?startDate={startDate}&endDate={endDate}`
 
-- Animal ve Customer arasında @ManyToOne ve @OneToMany ilişkisi
-- Animal ve Vaccine arasında @ManyToMany ilişkisi
-- Animal ve Appointment arasında @OneToMany ilişkisi
-- Appointment ve Doctor arasında @ManyToOne ilişkisi
-- AvailableDate ve Doctor arasında @ManyToOne ilişkisi
-- Doctor ve Appointment, AvailableDate arasında @OneToMany ilişkisi
+### Doctors
 
+- **Add Doctor**: `POST /v2/doctors`
+- **Update Doctor**: `PUT /v2/doctors`
+- **View Doctor**: `GET /v2/doctors/{id}`
+- **Delete Doctor**: `DELETE /v2/doctors/{id}`
 
-**Hayvanlar**
--Hayvan Kaydetme                                                 --> POST /v2/animals
--Hayvan Güncelleme                                           --> PUT /v2/animals
--Hayvan Silme                                                         --> DELETE /v2/animals/{id}
--Hayvanları İsmine Göre Filtreleme               --> GET /v2/animals/name/{name}
--Müşterinin Hayvanlarını Görüntüleme       --> GET /v2/animals/customer/{customerId}
+### Doctor's Available Days
 
-**Müşteriler**
--Müşteri Kaydetme                                                --> POST /v2/customers
--Müşteri Güncelleme                                           --> PUT /v2/customers
--Müşteri Silme                                                         --> DELETE /v2/customers/{id}
--Müşteri İsmine Göre Filtreleme                     --> GET /v2/customers/{name}
+- **Add Available Day**: `POST /v2/doctors/{doctorId}/availableDates`
+- **Update Available Day**: `PUT /v2/doctors/{doctorId}/availableDates`
+- **View Available Days**: `GET /v2/doctors/{doctorId}/availableDates`
+- **Delete Available Day**: `DELETE /v2/doctors/{doctorId}/availableDates`
 
-**Aşılar**
--Aşı Kaydetme                                                         -->  POST /v2/vaccines
--Aşı Güncelleme                                                    --> PUT /v2/vaccines
--Aşı Görüntüleme                                                 ---> GET /v2/vaccines/{id}
--Aşı Silme                                                                  --> DELETE /v2/vaccines/{id}
--Hayvanın Aşılarını Görüntüleme                  --> GET /v2/animals/{animalId}/vaccines
--Koruyuculuk Bitiş Tarihi Yaklaşan Aşıları 
-Listeleme                                  --> GET /v2/vaccines/filter?startDate={startDate}&endDate={endDate}
+## UML Diagram
 
-**Randevular**
--Randevu Oluşturma                                  --> POST /v2/appointments
--Randevu Güncelleme                              --> PUT /v2/appointments
--Randevu Görüntüleme                                 --> GET /v2/appointments/{id}
--Randevu Silme                                                 --> DELETE /v2/appointments/{id}
--Doktora Göre ve Tarih Aralığına Göre Randevu Filtreleme --> 
-GET /v2/appointments/doctor/{doctorId}?startDate={startDate}&endDate={endDate}
--Hayvana Göre ve Tarih Aralığına Göre Randevu Filtreleme --> 
-GET /v2/appointments/animal/{animalId}?startDate={startDate}&endDate={endDate}
-
-**Doktorlar**
--Doktor Kaydetme                                                --> POST /v2/doctors
--Doktor Güncelleme                                            --> PUT /v2/doctors
--Doktor Görüntüleme                                         --> GET /v2/doctors/{id}
--Doktor Silme                                                         --> DELETE /v2/doctors/{id}
-
-**Doktorun Müsait Günleri**
--Müsait Gün Ekleme                                             --> POST /v2/doctors/{doctorId}/availableDates
--Müsait Gün Güncelleme                                  --> PUT /v2/doctors/{doctorId}/availableDates
--Müsait Gün Görüntüleme                                --> GET /v2/doctors/{doctorId}/availableDates
--Müsait Gün Silme                                                 --> DELETE /v2/doctors/{doctorId}/availableDates
-
+![UML Diagram](https://github.com/user-attachments/assets/c3f70b82-ef3f-45e2-a1ee-54d00a3d46b2)
